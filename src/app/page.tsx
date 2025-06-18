@@ -203,7 +203,7 @@ export default function ComingSoon() {
           className="text-center mb-8"
         >
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-            Something Beautiful is Coming
+            All things Fashion and Beauty Coming Soon!
           </h2>
           <p className="text-gray-600 text-sm md:text-base max-w-xl mx-auto">
             Get ready to transform your beauty routine with our exclusive collection of premium products.
