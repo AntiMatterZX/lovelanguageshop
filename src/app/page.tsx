@@ -106,9 +106,9 @@ export default function ComingSoon() {
           backgroundRepeat: 'no-repeat'
         }}
       >
-        {/* Fallback gradient background in case image doesn't load */}
+
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-pink-900 to-rose-900" />
-        {/* Overlay for better text readability */}
+
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50" />
       </div> */}
 
