@@ -96,35 +96,16 @@ export default function ComingSoon() {
 
   return (
     <div className="min-h-screen overflow-hidden relative">
-      {/* Background image with overlay - Method 1: Using Tailwind classes */}
-{/*       <div 
+      {/* Simple background image with overlay */}
+      <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: `url('/Neha.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
         }}
       >
-
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-pink-900 to-rose-900" />
-
+        {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50" />
-      </div> */}
-
-      {/* Alternative Method 2: Using Next.js Image as background */}
-      <div className="absolute inset-0">
-        <Image
-          src="/Neha.png"
-          alt="Background"
-          fill
-          style={{ objectFit: 'cover' }}
-          priority
-          className="z-0"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50 z-10" />
       </div>
-     
 
       {/* Animated background elements */}
       <div className="absolute inset-0 z-20">
