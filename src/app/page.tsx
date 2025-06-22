@@ -98,9 +98,9 @@ export default function ComingSoon() {
     <div className="min-h-screen overflow-hidden relative">
       {/* Simple background image with overlay */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gradient-to-br from-purple-900 via-pink-900 to-rose-900"
         style={{
-          backgroundImage: `url('/Neha.png')`,
+          backgroundImage: `url('/Neha .png')`,
         }}
       >
         {/* Dark overlay for better text readability */}
