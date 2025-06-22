@@ -4,6 +4,9 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Heart, Star, Mail, Instagram, Facebook, Twitter } from 'lucide-react';
 
+// Import your local image
+import nehaImage from './Neha.png'; // Adjust path as needed
+
 interface TimeLeft {
   days: number;
   hours: number;
@@ -17,15 +20,16 @@ export default function ComingSoon() {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState<'success' | 'error' | ''>('');
+  const [isMobile, setIsMobile] = useState(false);
   
-  // Hardcoded launch date - 30 days from now (using useMemo to prevent re-creation)
+  // Hardcoded launch date - 30 days from now
   const launchDate = useMemo(() => {
     const date = new Date();
     date.setDate(date.getDate() + 30);
     return date;
   }, []);
 
-  // Predefined positions for background particles to avoid hydration mismatch
+  // Predefined positions for background particles
   const particlePositions = [
     { left: '10%', top: '20%' },
     { left: '25%', top: '15%' },
@@ -45,6 +49,14 @@ export default function ComingSoon() {
   ];
 
   useEffect(() => {
+    // Check for mobile devices
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
     const timer = setInterval(() => {
       const now = new Date().getTime();
       const distance = launchDate.getTime() - now;
@@ -59,7 +71,10 @@ export default function ComingSoon() {
       }
     }, 1000);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('resize', checkIfMobile);
+    };
   }, [launchDate]);
 
   const handleSubscribe = async (e: React.FormEvent) => {
@@ -71,23 +86,14 @@ export default function ComingSoon() {
     setMessageType('');
 
     try {
-      // For static hosting, use a form service like Formspree, Netlify Forms, or Getform
-      // Replace 'YOUR_FORM_ENDPOINT' with your actual form service endpoint
-      
-      // Example with Formspree (create account at formspree.io):
-      // const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-      
-      // Example with Getform (create account at getform.io):
-      // const response = await fetch('https://getform.io/f/YOUR_FORM_ID', {
-      
-      // For demo purposes, we'll simulate success
+      // Simulate API request
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       setMessage('Thank you! You\'ll be notified when we launch! ✨');
       setMessageType('success');
       setEmail('');
       
-      // Store in localStorage for demo purposes
+      // Store in localStorage
       const subscribers = JSON.parse(localStorage.getItem('love-language-subscribers') || '[]');
       subscribers.push({
         email,
@@ -119,13 +125,15 @@ export default function ComingSoon() {
         <div 
           className="w-full h-full bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1522338242992-e1a54906a8da?q=80&w=2788&auto=format&fit=crop')"
+            backgroundImage: `url(${nehaImage.src})`,
+            // Adjust background position for different devices
+            backgroundPosition: isMobile ? 'top center' : 'center'
           }}
         />
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50" />
       </div>
 
-      {/* Animated background elements with fixed positions */}
+      {/* Animated background elements */}
       <div className="absolute inset-0">
         {particlePositions.map((position, i) => (
           <motion.div
@@ -334,7 +342,7 @@ export default function ComingSoon() {
           ))}
         </motion.div>
 
-        {/* Floating Stars - Fixed positions */}
+        {/* Floating Stars */}
         <div className="absolute inset-0 pointer-events-none">
           {[
             { left: '20%', top: '25%' },
