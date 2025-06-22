@@ -113,7 +113,18 @@ export default function ComingSoon() {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-rose-50 overflow-hidden">
+    <div className="h-screen overflow-hidden relative">
+      {/* Background image with overlay */}
+      <div className="absolute inset-0">
+        <div 
+          className="w-full h-full bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1522338242992-e1a54906a8da?q=80&w=2788&auto=format&fit=crop')"
+          }}
+        />
+        <div className="absolute inset-0 bg-black/60" />
+      </div>
+
       {/* Animated background elements with fixed positions */}
       <div className="absolute inset-0">
         {particlePositions.map((position, i) => (
@@ -161,7 +172,7 @@ export default function ComingSoon() {
               <Sparkles className="text-pink-400 w-6 h-6 md:w-8 md:h-8 drop-shadow-lg" />
             </motion.div>
             <motion.h1 
-              className="font-playfair text-4xl md:text-6xl lg:text-7xl font-bold tracking-wide bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 bg-clip-text text-pink-500"
+              className="font-playfair text-4xl md:text-6xl lg:text-7xl font-bold tracking-wide bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 bg-clip-text text-transparent"
             >
               <span className="relative">
                 Love 
@@ -189,7 +200,7 @@ export default function ComingSoon() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="text-gray-600 text-lg md:text-xl font-light tracking-wide"
+            className="text-gray-200 text-lg md:text-xl font-light tracking-wide"
           >
             Premium Hair & Beauty Products
           </motion.p>
@@ -202,10 +213,10 @@ export default function ComingSoon() {
           transition={{ delay: 0.8, duration: 0.8 }}
           className="text-center mb-8"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-            All things Fashion and Beauty Coming Soon!
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+            All things Fashion and Beauty Coming Soon!
           </h2>
-          <p className="text-gray-600 text-sm md:text-base max-w-xl mx-auto">
+          <p className="text-gray-200 text-sm md:text-base max-w-xl mx-auto">
             Get ready to transform your beauty routine with our exclusive collection of premium products.
           </p>
         </motion.div>
@@ -307,16 +318,16 @@ export default function ComingSoon() {
           className="flex gap-4"
         >
           {[
-            { icon: Instagram, href: '#', color: 'text-pink-500' },
-            { icon: Facebook, href: '#', color: 'text-blue-500' },
-            { icon: Twitter, href: '#', color: 'text-blue-400' },
+            { icon: Instagram, href: '#', color: 'text-pink-300' },
+            { icon: Facebook, href: '#', color: 'text-blue-300' },
+            { icon: Twitter, href: '#', color: 'text-blue-200' },
           ].map((social, socialIndex) => (
             <motion.a
               key={socialIndex}
               href={social.href}
               whileHover={{ scale: 1.2, rotate: 5 }}
               whileTap={{ scale: 0.9 }}
-              className={`${social.color} hover:bg-white p-2 rounded-full transition-all duration-300`}
+              className={`${social.color} hover:bg-white/20 p-2 rounded-full transition-all duration-300`}
             >
               <social.icon className="w-5 h-5" />
             </motion.a>
@@ -348,7 +359,7 @@ export default function ComingSoon() {
                 top: position.top,
               }}
             >
-              <Star className="text-yellow-400 w-3 h-3 opacity-50" />
+              <Star className="text-yellow-200 w-3 h-3 opacity-50" />
             </motion.div>
           ))}
         </div>
