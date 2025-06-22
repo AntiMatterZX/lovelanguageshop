@@ -1,28 +1,13 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState } from 'react';
 import { Sparkles, Heart, Star, Mail, Instagram, Facebook, Twitter } from 'lucide-react';
 
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
-
 export default function ComingSoon() {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState<'success' | 'error' | ''>('');
-  
-  // Hardcoded launch date - 30 days from now
-  const launchDate = useMemo(() => {
-    const date = new Date();
-    date.setDate(date.getDate() + 30);
-    return date;
-  }, []);
 
   // Predefined positions for background particles
   const particlePositions = [
@@ -42,24 +27,6 @@ export default function ComingSoon() {
     { left: '65%', top: '70%' },
     { left: '80%', top: '85%' },
   ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = launchDate.getTime() - now;
-
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000)
-        });
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [launchDate]);
 
   const handleSubscribe = async () => {
     if (!email) return;
@@ -122,23 +89,20 @@ export default function ComingSoon() {
         }
       `}</style>
       <div className="min-h-screen overflow-hidden relative" style={{ fontFamily: 'Seasons, serif' }}>
-        {/* Simple background image with overlay */}
+        {/* Background image without overlay */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gradient-to-br from-purple-900 via-pink-900 to-rose-900"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url('/Neha .png')`,
           }}
-        >
-          {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50" />
-        </div>
+        />
 
         {/* Animated background particles */}
         <div className="absolute inset-0 z-20">
           {particlePositions.map((position, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 sm:w-1.5 sm:h-1.5 bg-pink-300 rounded-full opacity-25 animate-pulse"
+              className="absolute w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-full opacity-25 animate-pulse"
               style={{
                 left: position.left,
                 top: position.top,
@@ -153,50 +117,28 @@ export default function ComingSoon() {
           
           {/* Main Brand Title */}
           <div className="mb-4 sm:mb-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-wide bg-gradient-to-r from-pink-400 via-purple-400 to-rose-400 bg-clip-text text-transparent leading-tight" style={{ fontFamily: 'Seasons, serif' }}>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-wide text-white leading-tight" style={{ fontFamily: 'Seasons, serif' }}>
               Love Language
             </h1>
           </div>
 
-          {/* Coming Soon Subtitle with Bouncing Animation */}
-          <div className="mb-6 sm:mb-8">
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-white/90 tracking-wider flex items-center justify-center gap-1" style={{ fontFamily: 'Seasons, serif' }}>
+          {/* Description */}
+          <div className="mb-8 sm:mb-10">
+            <div className="text-white text-lg sm:text-xl md:text-2xl font-light tracking-wide max-w-lg mx-auto px-4 space-y-2" style={{ fontFamily: 'Seasons, serif' }}>
+              <p>Love is in the hair</p>
+              <p>Love is in the skin</p>
+              <p>Love is in the clothes</p>
+            </div>
+          </div>
+
+          {/* Coming Soon with Bouncing Animation */}
+          <div className="mb-8 sm:mb-10">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light text-pink-400 tracking-wider flex items-center justify-center gap-1" style={{ fontFamily: 'Seasons, serif' }}>
               <span>Coming soon</span>
               <span className="bounce-text">.</span>
               <span className="bounce-text bounce-delay-1">.</span>
               <span className="bounce-text bounce-delay-2">.</span>
             </h2>
-          </div>
-
-          {/* Description */}
-          <div className="mb-8 sm:mb-10">
-            <p className="text-gray-200 text-sm sm:text-base md:text-lg font-light tracking-wide max-w-lg mx-auto px-4" style={{ fontFamily: 'Seasons, serif' }}>
-              Premium Hair & Beauty Products - Get ready to transform your beauty routine with our exclusive collection
-            </p>
-          </div>
-
-          {/* Countdown Timer */}
-          <div className="mb-6 sm:mb-8">
-            <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 lg:gap-6 max-w-lg mx-auto">
-              {[
-                { label: 'Days', value: timeLeft.days },
-                { label: 'Hours', value: timeLeft.hours },
-                { label: 'Minutes', value: timeLeft.minutes },
-                { label: 'Seconds', value: timeLeft.seconds }
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  className="bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 shadow-lg border border-pink-100 hover:scale-105 transition-transform duration-200"
-                >
-                  <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-pink-600 mb-1" style={{ fontFamily: 'Seasons, serif' }}>
-                    {item.value.toString().padStart(2, '0')}
-                  </div>
-                  <div className="text-gray-600 text-xs sm:text-sm font-medium" style={{ fontFamily: 'Seasons, serif' }}>
-                    {item.label}
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Email Subscription */}
@@ -249,9 +191,9 @@ export default function ComingSoon() {
           {/* Social Media Links */}
           <div className="flex gap-3 sm:gap-4">
             {[
-              { icon: Instagram, href: '#', color: 'text-pink-300 hover:text-pink-200' },
-              { icon: Facebook, href: '#', color: 'text-blue-300 hover:text-blue-200' },
-              { icon: Twitter, href: '#', color: 'text-blue-200 hover:text-blue-100' },
+              { icon: Instagram, href: '#', color: 'text-white hover:text-pink-300' },
+              { icon: Facebook, href: '#', color: 'text-white hover:text-blue-300' },
+              { icon: Twitter, href: '#', color: 'text-white hover:text-blue-200' },
             ].map((social, socialIndex) => {
               const IconComponent = social.icon;
               return (
@@ -269,13 +211,13 @@ export default function ComingSoon() {
           {/* Decorative Elements */}
           <div className="absolute top-8 left-8 sm:top-12 sm:left-12">
             <div className="animate-spin" style={{ animationDuration: '8s' }}>
-              <Sparkles className="text-pink-400 w-6 h-6 sm:w-8 sm:h-8 drop-shadow-lg opacity-70" />
+              <Sparkles className="text-white w-6 h-6 sm:w-8 sm:h-8 drop-shadow-lg opacity-70" />
             </div>
           </div>
 
           <div className="absolute top-8 right-8 sm:top-12 sm:right-12">
             <div className="animate-pulse">
-              <Heart className="text-rose-400 w-6 h-6 sm:w-8 sm:h-8 drop-shadow-lg opacity-70" />
+              <Heart className="text-white w-6 h-6 sm:w-8 sm:h-8 drop-shadow-lg opacity-70" />
             </div>
           </div>
 
@@ -301,7 +243,7 @@ export default function ComingSoon() {
                   className="animate-spin"
                   style={{ animationDuration: `${12 + starIndex * 2}s` }}
                 >
-                  <Star className="text-yellow-200 w-3 h-3 sm:w-4 sm:h-4" />
+                  <Star className="text-white w-3 h-3 sm:w-4 sm:h-4" />
                 </div>
               </div>
             ))}
