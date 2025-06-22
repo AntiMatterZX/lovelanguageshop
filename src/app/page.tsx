@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import { Sparkles, Heart, Star, Mail, Instagram, Facebook, Twitter } from 'lucide-react';
 
 interface TimeLeft {
@@ -78,14 +77,6 @@ export default function ComingSoon() {
       setMessageType('success');
       setEmail('');
       
-      // Store in localStorage
-      const subscribers = JSON.parse(localStorage.getItem('love-language-subscribers') || '[]');
-      subscribers.push({
-        email,
-        timestamp: new Date().toISOString()
-      });
-      localStorage.setItem('love-language-subscribers', JSON.stringify(subscribers));
-      
       setTimeout(() => {
         setMessage('');
         setMessageType('');
@@ -104,122 +95,90 @@ export default function ComingSoon() {
   };
 
   return (
-    <div className="h-screen overflow-hidden relative">
-      {/* Background image with overlay */}
-      <div className="absolute inset-0">
-        {/* Use public path for Neha.png */}
-        <div 
-          className="w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('/Neha.png')",
-          }}
-        />
+    <div className="min-h-screen overflow-hidden relative">
+      {/* Background image with overlay - Method 1: Using Tailwind classes */}
+{/*       <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('/Neha.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Fallback gradient background in case image doesn't load */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-pink-900 to-rose-900" />
+        {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50" />
+      </div> */}
+
+      {/* Alternative Method 2: Using Next.js Image as background */}
+      <div className="absolute inset-0">
+        <Image
+          src="/Neha.png"
+          alt="Background"
+          fill
+          style={{ objectFit: 'cover' }}
+          priority
+          className="z-0"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50 z-10" />
       </div>
+     
 
       {/* Animated background elements */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-20">
         {particlePositions.map((position, i) => (
-          <motion.div
+          <div
             key={i}
-            className="absolute w-1.5 h-1.5 bg-pink-300 rounded-full opacity-25"
-            animate={{
-              x: [0, 80, 0],
-              y: [0, -80, 0],
-              scale: [1, 1.3, 1],
-            }}
-            transition={{
-              duration: 8 + i,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            className="absolute w-1.5 h-1.5 bg-pink-300 rounded-full opacity-25 animate-pulse"
             style={{
               left: position.left,
               top: position.top,
+              animationDelay: `${i * 0.5}s`,
+              animationDuration: `${8 + i}s`
             }}
           />
         ))}
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center items-center">
+      <div className="relative z-30 container mx-auto px-4 min-h-screen flex flex-col justify-center items-center">
         {/* Brand Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-center mb-6"
-        >
-          <motion.div
-            animate={{ rotate: [0, 2, -2, 0] }}
-            transition={{ duration: 6, repeat: Infinity }}
-            className="inline-flex items-center gap-3 mb-2"
-          >
-            <motion.div
-              animate={{ 
-                rotate: [0, 360],
-                scale: [1, 1.1, 1]
-              }}
-              transition={{ duration: 8, repeat: Infinity }}
-            >
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center gap-3 mb-2">
+            <div className="animate-spin">
               <Sparkles className="text-pink-400 w-6 h-6 md:w-8 md:h-8 drop-shadow-lg" />
-            </motion.div>
-            <motion.h1 
-              className="font-playfair text-4xl md:text-6xl lg:text-7xl font-bold tracking-wide bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 bg-clip-text text-transparent"
-            >
+            </div>
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold tracking-wide bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 bg-clip-text text-transparent">
               <span className="relative">
                 Love 
-                <motion.span 
-                  className="inline-block mx-2"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                >
+                <span className="inline-block mx-2 animate-bounce">
                   ✨
-                </motion.span>
+                </span>
                 Language
               </span>
-            </motion.h1>
-            <motion.div
-              animate={{ 
-                scale: [1, 1.2, 1],
-                rotate: [0, 10, -10, 0]
-              }}
-              transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
-            >
+            </h1>
+            <div className="animate-pulse">
               <Heart className="text-rose-400 w-6 h-6 md:w-8 md:h-8 drop-shadow-lg" />
-            </motion.div>
-          </motion.div>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="text-gray-200 text-lg md:text-xl font-light tracking-wide"
-          >
+            </div>
+          </div>
+          <p className="text-gray-200 text-lg md:text-xl font-light tracking-wide">
             Premium Hair & Beauty Products
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         {/* Coming Soon Message */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-          className="text-center mb-8"
-        >
+        <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
             All things Fashion and Beauty Coming Soon!
           </h2>
           <p className="text-gray-200 text-sm md:text-base max-w-xl mx-auto">
             Get ready to transform your beauty routine with our exclusive collection of premium products.
           </p>
-        </motion.div>
+        </div>
 
         {/* Countdown Timer */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="mb-8"
-        >
+        <div className="mb-8">
           <div className="grid grid-cols-4 gap-3 md:gap-6">
             {[
               { label: 'Days', value: timeLeft.days },
@@ -227,35 +186,23 @@ export default function ComingSoon() {
               { label: 'Minutes', value: timeLeft.minutes },
               { label: 'Seconds', value: timeLeft.seconds }
             ].map((item) => (
-              <motion.div
+              <div
                 key={item.label}
-                whileHover={{ scale: 1.05 }}
-                className="bg-white/80 backdrop-blur-sm rounded-xl p-3 md:p-4 shadow-lg border border-pink-100"
+                className="bg-white/90 backdrop-blur-sm rounded-xl p-3 md:p-4 shadow-lg border border-pink-100 hover:scale-105 transition-transform duration-200"
               >
-                <motion.div
-                  key={item.value}
-                  initial={{ scale: 1.1, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-2xl md:text-4xl font-bold text-pink-600 mb-1"
-                >
+                <div className="text-2xl md:text-4xl font-bold text-pink-600 mb-1">
                   {item.value.toString().padStart(2, '0')}
-                </motion.div>
+                </div>
                 <div className="text-gray-600 text-xs md:text-sm font-medium">
                   {item.label}
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Email Subscription */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.8, duration: 0.8 }}
-          className="w-full max-w-md mb-8"
-        >
+        <div className="w-full max-w-md mb-8">
           <form onSubmit={handleSubscribe} className="flex gap-2">
             <input
               type="email"
@@ -266,12 +213,10 @@ export default function ComingSoon() {
               required
               disabled={isLoading}
             />
-            <motion.button
-              whileHover={{ scale: isLoading ? 1 : 1.05 }}
-              whileTap={{ scale: isLoading ? 1 : 0.95 }}
+            <button
               type="submit"
               disabled={isLoading}
-              className="px-4 py-2.5 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-sm rounded-lg hover:from-pink-600 hover:to-purple-600 transition-all duration-300 flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2.5 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-sm rounded-lg hover:from-pink-600 hover:to-purple-600 transition-all duration-300 flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105"
             >
               {isLoading ? (
                 <>
@@ -284,75 +229,61 @@ export default function ComingSoon() {
                   Notify
                 </>
               )}
-            </motion.button>
+            </button>
           </form>
           
           {message && (
-            <motion.div
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`mt-3 p-2 text-sm rounded-lg text-center ${
+            <div
+              className={`mt-3 p-2 text-sm rounded-lg text-center transition-all duration-300 ${
                 messageType === 'success' 
                   ? 'bg-green-100 text-green-800' 
                   : 'bg-red-100 text-red-800'
               }`}
             >
               {messageType === 'success' ? '✨' : '⚠️'} {message}
-            </motion.div>
+            </div>
           )}
-        </motion.div>
+        </div>
 
         {/* Social Media Links */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 0.8 }}
-          className="flex gap-4"
-        >
+        <div className="flex gap-4">
           {[
-            { icon: Instagram, href: '#', color: 'text-pink-300' },
-            { icon: Facebook, href: '#', color: 'text-blue-300' },
-            { icon: Twitter, href: '#', color: 'text-blue-200' },
-          ].map((social, socialIndex) => (
-            <motion.a
-              key={socialIndex}
-              href={social.href}
-              whileHover={{ scale: 1.2, rotate: 5 }}
-              whileTap={{ scale: 0.9 }}
-              className={`${social.color} hover:bg-white/20 p-2 rounded-full transition-all duration-300`}
-            >
-              <social.icon className="w-5 h-5" />
-            </motion.a>
-          ))}
-        </motion.div>
+            { icon: Instagram, href: '#', color: 'text-pink-300 hover:text-pink-200' },
+            { icon: Facebook, href: '#', color: 'text-blue-300 hover:text-blue-200' },
+            { icon: Twitter, href: '#', color: 'text-blue-200 hover:text-blue-100' },
+          ].map((social, socialIndex) => {
+            const IconComponent = social.icon;
+            return (
+              <a
+                key={socialIndex}
+                href={social.href}
+                className={`${social.color} hover:bg-white/20 p-2 rounded-full transition-all duration-300 hover:scale-110`}
+              >
+                <IconComponent className="w-5 h-5" />
+              </a>
+            );
+          })}
+        </div>
 
         {/* Floating Stars */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none z-10">
           {[
             { left: '20%', top: '25%' },
             { left: '45%', top: '35%' },
             { left: '70%', top: '20%' }
           ].map((position, starIndex) => (
-            <motion.div
+            <div
               key={starIndex}
-              className="absolute"
-              animate={{
-                y: [0, -15, 0],
-                rotate: [0, 180, 360],
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                duration: 3 + starIndex,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+              className="absolute animate-bounce"
               style={{
                 left: position.left,
                 top: position.top,
+                animationDelay: `${starIndex}s`,
+                animationDuration: `${3 + starIndex}s`
               }}
             >
               <Star className="text-yellow-200 w-3 h-3 opacity-50" />
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
