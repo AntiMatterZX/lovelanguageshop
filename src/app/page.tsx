@@ -4,9 +4,6 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Heart, Star, Mail, Instagram, Facebook, Twitter } from 'lucide-react';
 
-// Import your local image
-import nehaImage from './Neha.png'; // Adjust path as needed
-
 interface TimeLeft {
   days: number;
   hours: number;
@@ -20,7 +17,6 @@ export default function ComingSoon() {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState<'success' | 'error' | ''>('');
-  const [isMobile, setIsMobile] = useState(false);
   
   // Hardcoded launch date - 30 days from now
   const launchDate = useMemo(() => {
@@ -49,14 +45,6 @@ export default function ComingSoon() {
   ];
 
   useEffect(() => {
-    // Check for mobile devices
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-    
     const timer = setInterval(() => {
       const now = new Date().getTime();
       const distance = launchDate.getTime() - now;
@@ -71,10 +59,7 @@ export default function ComingSoon() {
       }
     }, 1000);
 
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener('resize', checkIfMobile);
-    };
+    return () => clearInterval(timer);
   }, [launchDate]);
 
   const handleSubscribe = async (e: React.FormEvent) => {
@@ -122,12 +107,11 @@ export default function ComingSoon() {
     <div className="h-screen overflow-hidden relative">
       {/* Background image with overlay */}
       <div className="absolute inset-0">
+        {/* Use public path for Neha.png */}
         <div 
           className="w-full h-full bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url(${nehaImage.src})`,
-            // Adjust background position for different devices
-            backgroundPosition: isMobile ? 'top center' : 'center'
+            backgroundImage: "url('/Neha.png')",
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50" />
